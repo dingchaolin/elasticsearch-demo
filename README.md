@@ -35,3 +35,71 @@ connect: {
 ```
 -  npm start
 - 要先启动 elasticsearch 再启动这个服务
+
+## postman 测试
+
+### 1. 创建index
+- PUT http://localhost:9200/dcl-index
+- 返回
+```
+{
+    "acknowledged": true,
+    "shards_acknowledged": true,
+    "index": "dcl-index"
+}
+```
+
+### 2.存入数据
+- POST http://localhost:9200/dcl-index/employee/1
+``` body
+{
+    "first_name" : "John",
+    "last_name" :  "Smith",
+    "age" :        25,
+    "about" :      "I love to go rock climbing",
+    "interests": [ "sports", "music" ]
+}
+```
+- 返回值
+```
+{
+    "_index": "dcl-index",
+    "_type": "employee",
+    "_id": "1",
+    "_version": 1,
+    "result": "created",
+    "_shards": {
+        "total": 2,
+        "successful": 1,
+        "failed": 0
+    },
+    "created": true
+}
+```
+
+### 3.查询数据
+- GET http://localhost:9200/dcl-index/employee/1
+```
+{
+          "_index": "dcl-index",
+          "_type": "employee",
+          "_id": "1",
+          "_version": 1,
+          "found": true,
+          "_source": {
+              "first_name": "John",
+              "last_name": "Smith",
+              "age": 25,
+              "about": "I love to go rock climbing",
+              "interests": [
+                  "sports",
+                  "music"
+              ]
+          }
+      }
+
+```
+
+### 个人理解-对比mysql
+- index  数据库名
+- type   表名
