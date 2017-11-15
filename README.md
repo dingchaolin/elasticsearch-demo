@@ -100,6 +100,155 @@ connect: {
 
 ```
 
-### 个人理解-对比mysql
-- index  数据库名
-- type   表名
+### 概念解释
+
+#### 索引（index）-> mysql.db
+```
+一个索引就是一个拥有几分相似特征的文档的集合。
+比如说，你可以有一个客户数据的索引，另一个产品目录的索引，还有一个订单数据的索引。
+一个索引由一个名字来标识（必须全部是小写字母的），
+并且当我们要对对应于这个索引中的文档进行索引、搜索、更新和删除的时候，都要使用到这个名字。
+在一个集群中，如果你想，可以定义任意多的索引。
+```
+
+#### 类型（type）-> mysql.table
+```
+在一个索引中，你可以定义一种或多种类型。
+一个类型是你的索引的一个逻辑上的分类/分区，其语义完全由你来定。
+通常，会为具有一组共同字段的文档定义一个类型。
+比如说，我们假设你运营一个博客平台并且将你所有的数据存储到一个索引中。
+在这个索引中，你可以为用户数据定义一个类型，为博客数据定义另一个类型，当然，也可以为评论数据定义另一个类型。
+```
+
+#### 文档（document）-> mysql.一条记录
+```
+一个文档是一个可被索引的基础信息单元。
+比如，你可以拥有某一个客户的文档，某一个产品的一个文档，当然，也可以拥有某个订单的一个文档。
+文档以JSON（Javascript Object Notation）格式来表示，而JSON是一个到处存在的互联网数据交互格式。
+```
+
+#### 对比
+- mysql： db->tables->rows->columns
+- es:     index->type->doc->fields
+
+# **搜索**
+
+## _search
+- 可以检索当前index.type下的所有信息
+- GET /megacorp/employee/_search
+- 默认情况会返回检索到的前10个结果
+
+## query string
+- 可以指定查询条件
+- GET /megacorp/employee/_search?q=last_name:Smith
+
+## query DSL
+-  GET /megacorp/employee/_search  {"query":{"match":{"last_name":"Smith"}}}
+
+## query DSL 过滤器
+- GET /megacorp/employee/_search
+```
+{
+    "query" : {
+        "filtered" : {
+            "filter" : {
+                "range" : {
+                    "age" : { "gt" : 30 } <1>
+                }
+            },
+            "query" : {
+                "match" : {
+                    "last_name" : "smith" <2>
+                }
+            }
+        }
+    }
+}
+```
+- <1>是区间过滤器
+- <2>是查询条件
+
+## 全文检索 **match**
+- GET /megacorp/employee/_search
+```{
+         "query" : {
+             "match" : {
+                 "about" : "rock climbing"
+             }
+         }
+     }
+
+```
+- 返回
+```
+{
+   ...
+   "hits": {
+      "total":      2,
+      "max_score":  0.16273327,
+      "hits": [
+         {
+            ...
+            "_score":         0.16273327, <1>
+            "_source": {
+               "first_name":  "John",
+               "last_name":   "Smith",
+               "age":         25,
+               "about":       "I love to go rock climbing",
+               "interests": [ "sports", "music" ]
+            }
+         },
+         {
+            ...
+            "_score":         0.016878016, <2>
+            "_source": {
+               "first_name":  "Jane",
+               "last_name":   "Smith",
+               "age":         32,
+               "about":       "I like to collect rock albums",
+               "interests": [ "music" ]
+            }
+         }
+      ]
+   }
+}
+```
+- 包含rock climbing 的都出来了 _score 表示关联程度
+- 相关性(relevance)的概念在Elasticsearch中非常重要，而这个概念在传统关系型数据库中是不可想象的，因为传统数据库对记录的查询只有匹配或者不匹配。
+
+## 短语检索 **match_phrase**
+- GET /megacorp/employee/_search
+```
+{
+      "query" : {
+          "match_phrase" : {
+              "about" : "rock climbing"
+          }
+      }
+  }
+```
+
+## 高亮我们的检索 **highlight**
+- GET /megacorp/employee/_search
+```
+{
+     "query" : {
+         "match_phrase" : {
+             "about" : "rock climbing"
+         }
+     },
+     "highlight": {
+         "fields" : {
+             "about" : {}
+         }
+     }
+ }
+```
+
+
+ 
+  
+  
+
+
+
