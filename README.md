@@ -245,7 +245,93 @@ connect: {
  }
 ```
 
+# 聚合
 
+## aggs
+- GET /megacorp/employee/_search
+```
+{
+  "aggs": {
+    "all_interests": {
+      "terms": { "field": "interests" }
+    }
+  }
+}
+```
+- buckets：[{doc_count:2}] 返回多一个doc_count字段
+
+## 增加聚合条件
+- GET /megacorp/employee/_search
+```
+{
+  "query": {
+    "match": {
+      "last_name": "smith"
+    }
+  },
+  "aggs": {
+    "all_interests": {
+      "terms": {
+        "field": "interests"
+      }
+    }
+  }
+}
+```
+## 聚合-分级汇总
+- GET /megacorp/employee/_search
+```
+{
+      "aggs" : {
+          "all_interests" : {
+              "terms" : { "field" : "interests" },
+              "aggs" : {
+                  "avg_age" : {
+                      "avg" : { "field" : "age" }
+                  }
+              }
+          }
+      }
+  }
+
+```
+
+# 集群健康
+- GET /_cluster/health
+- green  所有主要分片和复制分片都可用
+- yellow 所有主要分片可用，但不是所有复制分片都可用
+- red    不是所有的主要分片都可用
+
+# 分片shard
+- 一个分片本身就是一个完整的搜索引擎。
+- 复制分片可以提供备份功能，读请求
+
+# 添加索引
+-  索引创建完成的时候，主分片的数量就固定了，但是复制分片的数量可以随时调整
+- 默认情况下，一个索引被分配5个主分片，每个主分片都有一个复制分片
+- PUT /blogs
+```{
+        "settings" : {
+           "number_of_shards" : 3,
+           "number_of_replicas" : 1
+        }
+     } 
+```
+# 增加复制分片的数量
+- PUT /blogs/_settings
+```
+{
+   "number_of_replicas" : 2
+}             
+  
+```
+- 将复制分片增加到2个
+        
+# 文档元数据
+- _index	文档存储的地方
+- _type	    文档代表的对象种类
+- _id	    文档的唯一编号
+  
  
   
   
