@@ -9,6 +9,20 @@
 - brew install elasticsearch
 - brew info elasticsearch  查看安装信息
 - elasticsearch 启动命令
+- brew install elasticsearch
+- brew upgrade elasticsearch
+- brew services start elasticsearch
+## 2.1 下载地址 elasticsearch
+- https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.2.1.zip
+
+
+## index
+- http://127.0.0.1:9200
+```
+http.cors.enabled: true  
+http.cors.allow-origin: "*"
+```
+- 在elasticserch中 添加这两个配置项才能访问elasticsearch-head
 
 ## 3. 访问
 - 127.0.0.1:9200
@@ -35,6 +49,7 @@ connect: {
 ```
 -  npm start
 - 要先启动 elasticsearch 再启动这个服务
+
 
 ## postman 测试
 
@@ -76,6 +91,7 @@ connect: {
     "created": true
 }
 ```
+
 
 ### 3.查询数据
 - GET http://localhost:9200/dcl-index/employee/1
@@ -333,8 +349,37 @@ connect: {
 - _id	    文档的唯一编号
   
  
+ # 错误处理
+ - {"error":"Content-Type header [application/x-www-form-urlencoded] is not supported","status":406}
+ ```
+ curl -H "Content-Type: application/json" -XPOST 192.168.14.173:32000/test_index_1221/test_type/5 -d '{'user_name':"xiaoming"}'
+ {"error":"Content-Type header [application/x-www-form-urlencoded] is not supported","status":406}
+ 1
+ 2
+
+```
   
-  
+# grafana
+
+## mac-install
+- brew install grafana
+- brew services start grafana
+- brew services restart grafana
+- brew services stop grafana
+- admin/admin
+
+## linux-install
+- wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.6.3.linux-x64.tar.gz
+- gunzip grafana-4.6.3.linux-x64.tar.gz
+- tar -xvf grafana-4.6.3.linux-x64.tar
+- mv grafana-4.6.3 grafana
+
+## index
+- - http://127.0.0.1:3000
+
+
+
+
 
 
 
