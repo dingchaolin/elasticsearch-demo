@@ -6,13 +6,7 @@ let options = {
     headers: {
         "content-type": "application/json",
     },
-    body: JSON.stringify({
-        name:"dingchaolin",
-        memUsed: 45,
-        cpuUsed: 71,
-        processNum:1,
-        time: new Date()
-    })
+    body: ""
 }
 request(options, function( err, res, body){
     if( err ){
@@ -25,6 +19,7 @@ function send(){
 
     let body = {
         name:"dingchaolin",
+        os: "redhat",
         memUsed: Math.floor(Math.random()*600),
         cpuUsed: Math.floor(Math.random()*200),
         processNum:Math.floor(Math.random()*400),
@@ -39,7 +34,7 @@ function send(){
         console.log( body )
         setTimeout( function(){
             send()
-        }, 30000)
+        }, 1000)
     })
 
 

@@ -18,11 +18,11 @@ request(options, function( err, res, body){
 function send(){
 
     let body = {
-        name:"ys",
-        os: "mac",
-        memUsed: Math.floor(Math.random()*500),
-        cpuUsed: Math.floor(Math.random()*300),
-        processNum:Math.floor(Math.random()*100),
+        name:"JJ",
+        os: "contos",
+        memUsed: Math.floor(Math.random()*1000),
+        cpuUsed: Math.floor(Math.random()*800),
+        processNum:Math.floor(Math.random()*600),
         time: new Date()
     }
     options.body = JSON.stringify(body)

@@ -377,6 +377,47 @@ connect: {
 ## index
 - - http://127.0.0.1:3000
 
+## grafana 查询
+
+### query选项
+- 是值的查询
+```
+{
+        name:"jay",
+        os: "mac",
+        memUsed: Math.floor(Math.random()*1000),
+        cpuUsed: Math.floor(Math.random()*800),
+        processNum:Math.floor(Math.random()*600),
+        time: new Date()
+    }
+
+```
+- 如果query中写的是 mac 就是把数据中所有os是mac的数据拿出来绘图
+- * 表示所有数据
+
+## metric
+- 选择绘图类型
+- average  sum max min 等等
+- 可以选择绘图的字段 比如cpuUsed
+
+## GroupBy
+- 可以选择多个分组条件
+- terms name.keyword 按名字  name.keyword  os.keyword  字符串都需要选择keyword
+- Date Histogram 时间
+
+## Data Source
+- 数据源
+
+
+## template
+- http://docs.grafana.org/features/datasources/elasticsearch/#templating
+- 主要是query
+- http://docs.grafana.org/features/datasources/elasticsearch/#templating
+- {"find": "terms", "field": "os.keyword", "size": 1000}
+- 写成 os.keyword 才能把所有的类型列出来
+- 使用作图的时候 query 栏 写 $os
+- 多个选项 $os and $name  或者  [[os]] and [[name]]  都可以
+- [[name]]-[[os]] 可以修改标题
 
 
 
