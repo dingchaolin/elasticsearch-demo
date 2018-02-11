@@ -419,8 +419,22 @@ connect: {
 - 多个选项 $os and $name  或者  [[os]] and [[name]]  都可以
 - [[name]]-[[os]] 可以修改标题
 
+# kibana
+- https://artifacts.elastic.co/downloads/kibana/kibana-6.2.1-darwin-x86_64.tar.gz
+- tar -xvf kibana-6.2.1-darwin-x86_64.tar.gz
+- mv kibana-6.2.1-darwin-x86_64 kibana
 
+## 配置
+- server.port: 5601
+- server.host: "0.0.0.0"
+- elasticsearch.url: "http://127.0.0.1:9200"
+- kibana.index: ".kibana"
 
+## 启动
+- sudo ./kibana
+- nohup ./kibana &
+## index
+- http://localhost:5601/
 
 
 
